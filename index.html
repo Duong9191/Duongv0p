@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hồ sơ Cá nhân - Dương Sú</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css" rel="stylesheet">
+    <style>
+      html {
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        scrollbar-width: thin;
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: inherit;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--secondary-bg);
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--accent-bg);
+        border-radius: 10px;
+        border: 2px solid var(--secondary-bg);
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: #6366f1;
+      }
+
+      :root {
+        --primary-bg: #171717;
+        --secondary-bg: #262626;
+        --accent-bg: #4f46e5;
+        --primary-color: #fff;
+        --secondary-color: rgba(255, 255, 255, 70%);
+        --accent-color: #818cf8;
+        --border-color: rgba(255, 255, 255, 30%);
+        --username-size: 32px;
+        --title-size: 28px;
+        --subtitle: 24px;
+        --header-bg-image: url('images/banner.jpg');
+        --avatar-image: url('images/duong.jpg');
+      }
+
+      body {
+        background-color: #0a0a0a;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow: hidden;
+        position: relative;
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Welcome Overlay */
+      #welcome-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        backdrop-filter: blur(5px);
+        animation: fadeIn 0.5s ease;
+      }
+
+      #welcome-overlay.hidden {
+        animation: fadeOut 0.5s ease forwards;
+      }
+
+      .overlay-content {
+        background-color: var(--primary-bg);
+        padding: 30px;
+        border-radius: 20px;
+        text-align: center;
+        max-width: 500px;
+        width: 90%;
+        border: 2px solid var(--accent-bg);
+        transform: scale(0.9);
+        animation: popIn 0.6s ease forwards;
+        box-shadow: 0 0 30px rgba(79, 70, 229, 0.5);
+      }
+
+      .overlay-content h3 {
+        color: var(--accent-color);
+        margin-bottom: 15px;
+        font-size: 24px;
+      }
+
+      .overlay-content p {
+        color: var(--primary-color);
+        margin-bottom: 20px;
+        line-height: 1.6;
+      }
+
+      .overlay-content button {
+        background-color: var(--accent-bg);
+        color: white;
+        border: none;
+        padding: 12px 40px;
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .overlay-content button:hover {
+        background-color: #6366f1;
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+      }
+
+      .container {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+      }
+
+      .profile-card {
+        width: clamp(428px, 990px, 990px);
+        height: 870px;
+        background-color: var(--primary-bg);
+        border-radius: 40px;
+        border: 2px solid var(--accent-bg);
+        overflow: auto;
+        display: grid;
+        grid-template-rows: 220px auto;
+        position: relative;
+      }
+
+      /* ------ profile header section */
+      .profile-header {
+        background: var(--header-bg-image) center;
+        background-size: cover;
+        margin: 10px;
+        border-radius: 30px;
+        position: relative;
+        transition: background-image 0.8s ease;
+      }
+
+      .main-profile {
+        display: flex;
+        align-items: center;
+        position: absolute;
+        inset: calc(100% - 75px) auto auto 70px;
+      }
+
+      .profile-image {
+        width: 150px;
+        height: 150px;
+        background: var(--avatar-image) center;
+        background-size: cover;
+        border-radius: 50%;
+        border: 10px solid var(--primary-bg);
+        transition: all 0.8s ease;
+      }
+
+      .profile-names {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        color: var(--primary-color);
+        background-color: var(--primary-bg);
+        padding: 10px 30px;
+        border-radius: 0 10px 10px 0;
+        transform: translateX(-10px);
+      }
+
+      .page-title {
+        color: var(--secondary-color);
+      }
+
+      /* ------- profile body header */
+      .profile-body {
+        display: grid;
+        grid-template-columns: 150px auto;
+        gap: 70px;
+        padding: 90px 70px 60px;
+      }
+
+      .profile-actions {
+        display: grid;
+        grid-template-rows: repeat(2, max-content) auto;
+        gap: 10px;
+        margin-top: 30px;
+      }
+
+      .profile-actions button {
+        all: unset;
+        padding: 10px;
+        color: var(--primary-color);
+        border: 2px solid var(--accent-bg);
+        text-align: center;
+        border-radius: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .profile-actions button:hover {
+        transform: translateY(-2px);
+        background-color: rgba(79, 70, 229, 0.2);
+      }
+
+      .profile-actions .follow {
+        background-color: var(--accent-bg);
+      }
+
+      .profile-actions .message {
+        background-color: rgba(79, 70, 229, 0.2);
+      }
+
+      .bio {
+        color: var(--primary-color);
+        background-color: var(--secondary-bg);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+        border-radius: 10px;
+      }
+
+      .bio-header {
+        display: flex;
+        gap: 10px;
+        border-bottom: 1px solid var(--border-color);
+        color: var(--secondary-color);
+        padding-bottom: 8px;
+      }
+
+      .hobbies-section {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        margin-top: 5px;
+      }
+
+      .hobbies-title {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-weight: bold;
+        color: var(--accent-color);
+        margin-top: 10px;
+      }
+
+      .hobbies-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 8px;
+      }
+
+      .hobby-tag {
+        background: rgba(129, 140, 248, 0.2);
+        border-radius: 20px;
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        transition: all 0.2s ease;
+      }
+
+      .hobby-tag:hover {
+        background: rgba(129, 140, 248, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .account-info {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 2fr 1fr;
+        gap: 20px;
+      }
+
+      .data {
+        grid-area: 1/1/2/3;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        color: var(--secondary-color);
+        padding: 30px;
+        text-align: center;
+        border: 1px solid var(--border-color);
+        border-radius: 15px;
+        background-color: rgba(38, 38, 38, 0.7);
+      }
+
+      .important-data {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .other-data {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(38, 38, 38, 0.5);
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 15px;
+      }
+
+      .data-item .value {
+        color: var(--accent-color);
+        font-weight: bold;
+      }
+
+      .important-data .value {
+        font-size: var(--title-size);
+      }
+
+      .other-data .value {
+        font-size: var(--subtitle);
+      }
+
+      .data-item .title {
+        font-size: 0.9rem;
+        opacity: 0.8;
+      }
+
+      .social-media {
+        grid-area: 2/1/3/3;
+        background-color: var(--secondary-bg);
+        color: var(--secondary-color);
+        padding: 15px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .social-media span {
+        margin-right: 10px;
+      }
+
+      .media-link {
+        text-decoration: none;
+        color: var(--accent-color);
+        font-size: 1.8rem;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(129, 140, 248, 0.1);
+      }
+
+      .media-link:hover {
+        transform: translateY(-3px);
+        color: white;
+        background: rgba(129, 140, 248, 0.3);
+      }
+
+      .last-post {
+        grid-area: 1/3/3/4;
+        border: 1px solid var(--border-color);
+        background-color: var(--secondary-bg);
+        border-radius: 10px;
+        padding: 10px;
+        display: grid;
+        grid-template-rows: 70% auto max-content;
+        gap: 10px;
+      }
+
+      .post-cover {
+        position: relative;
+        background: url('https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80') center;
+        background-size: cover;
+        border-radius: 5px;
+      }
+
+      .last-badge {
+        position: absolute;
+        inset: 3px 3px auto auto;
+        background-color: rgba(0, 0, 0, 70%);
+        color: var(--primary-color);
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+      }
+
+      .post-title {
+        color: var(--primary-color);
+        font-size: 18px;
+        padding: 0 5px;
+      }
+
+      .post-CTA {
+        all: unset;
+        text-align: center;
+        border: 1px solid var(--accent-color);
+        color: var(--accent-color);
+        border-radius: 5px;
+        padding: 8px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .post-CTA:hover {
+        background: rgba(129, 140, 248, 0.1);
+        transform: translateY(-2px);
+      }
+
+      /* ----------- FAVORITE MUSIC SECTION ----------- */
+      .favorite-music {
+        grid-column: 1 / span 2;
+        margin-top: 20px;
+        background-color: var(--secondary-bg);
+        border-radius: 15px;
+        padding: 20px;
+      }
+
+      .music-header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: var(--accent-color);
+        margin-bottom: 20px;
+        border-bottom: 1px solid var(--border-color);
+        padding-bottom: 10px;
+      }
+
+      .music-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+
+      .music-card {
+        background-color: var(--primary-bg);
+        border-radius: 15px;
+        overflow: hidden;
+        border: 1px solid var(--border-color);
+        display: flex;
+        flex-direction: column;
+        transition: all 0.3s ease;
+      }
+
+      .music-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-bg);
+      }
+
+      .music-card.active {
+        border-color: var(--accent-bg);
+        box-shadow: 0 0 15px rgba(79, 70, 229, 0.5);
+      }
+
+      .album-art {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+      }
+
+      .album-art img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .play-btn {
+        position: relative;
+        width: 30px;
+        height: 30px;
+        background-color: var(--accent-bg);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        flex-shrink: 0;
+      }
+
+      .play-btn i {
+        color: white;
+        font-size: 14px;
+      }
+
+      .music-info {
+        padding: 15px;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .song-title {
+        color: var(--primary-color);
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+
+      .artist {
+        color: var(--secondary-color);
+        font-size: 14px;
+        margin-bottom: 15px;
+      }
+
+      .music-controls {
+        margin-top: auto;
+        padding: 0 15px 15px;
+      }
+
+      .progress-container {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+
+      .progress-bar {
+        flex-grow: 1;
+        height: 4px;
+        background-color: var(--border-color);
+        border-radius: 2px;
+        overflow: hidden;
+        position: relative;
+        cursor: pointer;
+      }
+
+      .progress {
+        height: 100%;
+        background-color: var(--accent-color);
+        width: 0%;
+        transition: width 0.1s linear;
+      }
+
+      .time {
+        font-size: 12px;
+        color: var(--secondary-color);
+        min-width: 35px;
+        text-align: center;
+      }
+
+      .music-icon {
+        width: 24px;
+        height: 24px;
+        background-color: var(--accent-bg);
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .music-icon i {
+        color: white;
+        font-size: 12px;
+      }
+
+      .yt-btn {
+        display: block;
+        text-align: center;
+        padding: 8px;
+        background: rgba(255, 0, 0, 0.1);
+        color: #ff4d4d;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+      }
+
+      .yt-btn:hover {
+        background: rgba(255, 0, 0, 0.2);
+        color: white;
+      }
+
+      .profile-card,
+      .profile-names,
+      .bio,
+      .data,
+      .social-media,
+      .last-post,
+      .favorite-music,
+      .other-data {
+        transition: all 0.4s ease;
+      }
+
+      /* Hiệu ứng chuyển động 0.3s */
+      .page-title,
+      .profile-actions button,
+      .bio-header,
+      .data-item .value,
+      .media-link,
+      .last-badge,
+      .post-CTA,
+      .post-title,
+      .music-card,
+      .play-btn,
+      .yt-btn,
+      .view-profile,
+      .theme-toggle,
+      .theme-toggle i,
+      .toolbar-btn {
+        transition: all 0.3s ease;
+      }
+
+      /* View Profile Button */
+      .view-profile {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 8px 15px;
+        background: rgba(79, 70, 229, 0.2);
+        color: var(--accent-color);
+        border-radius: 20px;
+        text-decoration: none;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        z-index: 10;
+      }
+
+      .view-profile:hover {
+        background: rgba(79, 70, 229, 0.4);
+        transform: translateY(-2px);
+      }
+
+      /* Toolbar & Theme Toggle */
+      .theme-toggle,
+      .toolbar-btn {
+        border: none;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10;
+      }
+
+      .theme-toggle {
+        position: absolute;
+        top: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      .theme-toggle i {
+        font-size: 24px;
+        color: white;
+      }
+
+      .theme-toggle:hover {
+        background: rgba(0, 0, 0, 0.7);
+        transform: scale(1.05);
+      }
+
+      .toolbar {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        display: flex;
+        gap: 15px;
+        z-index: 10;
+      }
+
+      .toolbar-btn {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(0, 0, 0, 0.5);
+        color: white;
+      }
+
+      .toolbar-btn:hover {
+        background: rgba(0, 0, 0, 0.7);
+        transform: scale(1.1);
+      }
+
+      /* ------------ media queries */
+      @media screen and (max-width: 950px) {
+        .last-post {
+          display: none;
+        }
+
+        .data,
+        .social-media {
+          grid-column: 1/4;
+        }
+
+        .music-container {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media screen and (max-width: 768px) {
+        .profile-card {
+          height: 100%;
+          border-radius: 0;
+          width: 100%;
+        }
+
+        .profile-header {
+          border-radius: 0;
+        }
+
+        .main-profile {
+          inset: calc(100% - 75px) auto auto 50%;
+          transform: translateX(-50%);
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .profile-names {
+          transform: translateX(0)
+        }
+
+        .profile-body {
+          grid-template-columns: 1fr;
+          gap: 20px;
+          padding: 90px 20px 60px;
+        }
+
+        .profile-actions {
+          grid-template-columns: repeat(2, 1fr);
+          margin-top: 90px;
+        }
+
+        .bio {
+          grid-column: 1/3;
+        }
+
+        .data {
+          gap: 20px;
+        }
+
+        .favorite-music {
+          grid-column: 1;
+        }
+
+        .view-profile {
+          top: 80px;
+        }
+      }
+
+      /* Light Theme Styles */
+      body.light-theme {
+        --primary-bg: #ffffff;
+        --secondary-bg: #f9f9f9;
+        --accent-bg: #ff6b6b;
+        --primary-color: #333333;
+        --secondary-color: rgba(0, 0, 0, 0.7);
+        --accent-color: #ff6b6b;
+        --border-color: rgba(0, 0, 0, 0.1);
+        --header-bg-image: url('images/last-post.jpg');
+        --avatar-image: url('images/duong.jpg');
+      }
+
+      .light-theme .profile-card,
+      .light-theme .profile-actions button,
+      .light-theme .data,
+      .light-theme .last-post,
+      .light-theme .music-card {
+        border-color: #ffd6e0;
+      }
+
+      .light-theme .profile-card {
+        border-color: #ffb6c1;
+      }
+
+      .light-theme .theme-toggle {
+        background: rgba(255, 255, 255, 0.7);
+      }
+
+      .light-theme .theme-toggle i {
+        color: #ff6b6b;
+      }
+
+      .light-theme .toolbar-btn {
+        background: rgba(255, 255, 255, 0.7);
+        color: #ff6b6b;
+      }
+
+      .light-theme .profile-actions .follow {
+        background: linear-gradient(45deg, #ff9a9e, #fad0c4);
+        color: white;
+      }
+
+      .light-theme .profile-actions .message {
+        background-color: white;
+        color: #ff6b6b;
+      }
+
+      .light-theme .bio,
+      .light-theme .other-data,
+      .light-theme .social-media,
+      .light-theme .post-CTA,
+      .light-theme .favorite-music {
+        background-color: #fff5f7;
+      }
+
+      .light-theme .hobby-tag {
+        background: rgba(255, 107, 107, 0.2);
+      }
+
+      .light-theme .data,
+      .light-theme .last-post,
+      .light-theme .music-card {
+        background-color: white;
+      }
+
+      .light-theme .yt-btn {
+        background: rgba(255, 0, 0, 0.05);
+        color: #ff6b6b;
+      }
+
+      .light-theme .view-profile {
+        background: rgba(255, 107, 107, 0.1);
+        color: #ff6b6b;
+      }
+
+      .light-theme ::-webkit-scrollbar-track {
+        background: #f1f1f1;
+      }
+
+      .light-theme ::-webkit-scrollbar-thumb {
+        background: #ff6b6b;
+      }
+
+      .light-theme ::-webkit-scrollbar-thumb:hover {
+        background: #ff5252;
+      }
+
+      /* Notification Styles */
+      .notification {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        transform: translateX(150%);
+        transition: transform 0.5s ease;
+        max-width: 350px;
+        z-index: 1000;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+      }
+
+      .notification.active {
+        transform: translateX(0);
+      }
+
+      .notification-icon {
+        font-size: 24px;
+        min-width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .follow-notification .notification-icon {
+        background-color: #1877f2;
+        color: white;
+      }
+
+      .message-notification .notification-icon {
+        background-color: #25D366;
+        color: white;
+      }
+
+      .notification-content {
+        flex: 1;
+      }
+
+      .notification-content h3 {
+        margin-bottom: 5px;
+        color: #2c3e50;
+      }
+
+      .notification-content p {
+        color: #7f8c8d;
+        margin-bottom: 15px;
+        line-height: 1.5;
+      }
+
+      .notification-buttons {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+      }
+
+      .notification-btn {
+        padding: 8px 20px;
+        border: none;
+        border-radius: 5px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .cancel-btn {
+        background-color: #e4e6eb;
+        color: #2c3e50;
+      }
+
+      .cancel-btn:hover {
+        background-color: #d8dadf;
+      }
+
+      .confirm-btn {
+        background-color: #1877f2;
+        color: white;
+      }
+
+      .message-notification .confirm-btn {
+        background-color: #25D366;
+      }
+
+      .confirm-btn:hover {
+        opacity: 0.9;
+      }
+
+      .light-theme .notification {
+        background-color: #fff;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .light-theme .notification-content h3 {
+        color: #333;
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+
+        to {
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+
+        to {
+          opacity: 0;
+          visibility: hidden;
+        }
+      }
+
+      @keyframes popIn {
+        0% {
+          transform: scale(0.9);
+          opacity: 0;
+        }
+
+        70% {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
+      .fade-out {
+        animation: fadeOut 0.5s ease forwards;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Welcome Overlay -->
+    <div id="welcome-overlay">
+      <div class="overlay-content">
+        <h3>Thông báo</h3>
+        <p>Web mới lập nên sẽ có một số lỗi nhất định. Nếu có bất kỳ lỗi gì về giao diện, vui lòng thông báo admin.</p>
+        <button id="overlay-ok-btn">OK</button>
+      </div>
+    </div>
+    <div class="container">
+      <div class="profile-card">
+        <div class="profile-header">
+          <button class="theme-toggle" id="theme-toggle">
+            <i class="fas fa-moon"></i>
+          </button>
+          <div class="main-profile">
+            <div class="profile-image"></div>
+            <div class="profile-names">
+              <h1 class="username">Lại Tùng Dương</h1>
+              <small class="page-title">Dân code dạo :v</small>
+            </div>
+          </div>
+        </div>
+        <div class="profile-body">
+          <div class="profile-actions">
+            <button class="follow" id="followBtn">
+              <i class="fas fa-user-plus"></i> Theo dõi </button>
+            <button class="message" id="messageBtn">
+              <i class="fas fa-comment"></i> Message </button>
+            <section class="bio">
+              <div class="bio-header">
+                <i class="fa fa-info-circle"></i> Giới thiệu
+              </div>
+              <p class="bio-text"> Lập trình viên Front-End với niềm đam mê tạo ra các ứng dụng web đáp ứng và thân thiện với người dùng. Chuyên về các framework JavaScript hiện đại và hiệu ứng CSS. </p>
+              <div class="hobbies-section">
+                <div class="hobbies-title">
+                  <i class="fas fa-heart"></i> Sở thích
+                </div>
+                <div class="hobbies-list">
+                  <span class="hobby-tag">Thiết kế UI/UX</span>
+                  <span class="hobby-tag">Chơi guitar</span>
+                  <span class="hobby-tag">Du lịch</span>
+                  <span class="hobby-tag">Giải toán</span>
+                  <span class="hobby-tag">Đọc sách</span>
+                </div>
+                <div class="hobbies-title">
+                  <i class="fas fa-heart"></i> Tình trạng mối quan hệ
+                </div>
+                <div class="hobbies-list">
+                  <span class="hobby-tag">FA 🐧</span>
+                </div>
+              </div>
+            </section>
+          </div>
+          <div class="account-info">
+            <div class="data">
+              <div class="important-data">
+                <section class="data-item">
+                  <h3 class="value">2</h3>
+                  <small class="title">Bài viết</small>
+                </section>
+                <section class="data-item">
+                  <h3 class="value">190+</h3>
+                  <small class="title">Người theo dõi</small>
+                </section>
+                <section class="data-item">
+                  <h3 class="value">65+</h3>
+                  <small class="title">Đang theo dõi</small>
+                </section>
+              </div>
+              <div class="other-data">
+                <section class="data-item">
+                  <h3 class="value">21+</h3>
+                  <small class="title">Lượt thích</small>
+                </section>
+                <section class="data-item">
+                  <h3 class="value">34+</h3>
+                  <small class="title">Bình luận</small>
+                </section>
+                <section class="data-item">
+                  <h3 class="value">2</h3>
+                  <small class="title">Đã lưu</small>
+                </section>
+              </div>
+            </div>
+            <div class="social-media">
+              <span>Theo dõi tôi tại:</span>
+              <a href="https://facebook.com" class="media-link" target="_blank">
+                <i class="fab fa-facebook-f"></i>
+              </a>
+              <a href="https://instagram.com" class="media-link" target="_blank">
+                <i class="fab fa-instagram"></i>
+              </a>
+              <a href="https://github.com" class="media-link" target="_blank">
+                <i class="fab fa-github"></i>
+              </a>
+            </div>
+            <div class="last-post">
+              <div class="post-cover">
+                <span class="last-badge">Bài viết mới nhất</span>
+              </div>
+              <h3 class="post-title">Hiệu ứng Animation 3D trong CSS</h3>
+              <a href="https://example.com/posts/animation-3d" class="post-CTA" target="_blank">
+                <i class="fas fa-external-link-alt"></i> Xem bài viết </a>
+            </div>
+          </div>
+          <div class="favorite-music">
+            <div class="music-header">
+              <i class="fas fa-music"></i>
+              <h3>Bài hát yêu thích</h3>
+            </div>
+            <div class="music-container">
+              <div class="music-card" data-id="1">
+                <div class="album-art">
+                  <img src="images/nhac1.jpg" alt="Blinding Lights">
+                </div>
+                <div class="music-info">
+                  <h4 class="song-title">Em còn nhớ anh không?</h4>
+                  <p class="artist">Remin x</p>
+                  <div class="music-icon">
+                    <i class="fas fa-music"></i>
+                  </div>
+                </div>
+                <div class="music-controls">
+                  <div class="progress-container">
+                    <div class="play-btn">
+                      <i class="fas fa-play"></i>
+                    </div>
+                    <div class="time">0:00</div>
+                    <div class="progress-bar">
+                      <div class="progress"></div>
+                    </div>
+                    <div class="time">3:20</div>
+                  </div>
+                </div>
+                <a href="https://youtube.com/watch?v=4NRXx6U8ABQ" class="yt-btn" target="_blank">
+                  <i class="fab fa-youtube"></i> Nghe trên YouTube </a>
+              </div>
+              <div class="music-card" data-id="2">
+                <div class="album-art">
+                  <img src="https://i.ytimg.com/vi/2Vv-BfVoq4g/maxresdefault.jpg" alt="Perfect">
+                </div>
+                <div class="music-info">
+                  <h4 class="song-title">Perfect</h4>
+                  <p class="artist">Ed Sheeran</p>
+                  <div class="music-icon">
+                    <i class="fas fa-music"></i>
+                  </div>
+                </div>
+                <div class="music-controls">
+                  <div class="progress-container">
+                    <div class="play-btn">
+                      <i class="fas fa-play"></i>
+                    </div>
+                    <div class="time">0:00</div>
+                    <div class="progress-bar">
+                      <div class="progress"></div>
+                    </div>
+                    <div class="time">4:23</div>
+                  </div>
+                </div>
+                <a href="https://youtube.com/watch?v=2Vv-BfVoq4g" class="yt-btn" target="_blank">
+                  <i class="fab fa-youtube"></i> Nghe trên YouTube </a>
+              </div>
+              <div class="music-card" data-id="3">
+                <div class="album-art">
+                  <img src="https://i.ytimg.com/vi/kJQP7kiw5Fk/maxresdefault.jpg" alt="Despacito">
+                </div>
+                <div class="music-info">
+                  <h4 class="song-title">Despacito</h4>
+                  <p class="artist">Luis Fonsi</p>
+                  <div class="music-icon">
+                    <i class="fas fa-music"></i>
+                  </div>
+                </div>
+                <div class="music-controls">
+                  <div class="progress-container">
+                    <div class="play-btn">
+                      <i class="fas fa-play"></i>
+                    </div>
+                    <div class="time">0:00</div>
+                    <div class="progress-bar">
+                      <div class="progress"></div>
+                    </div>
+                    <div class="time">3:47</div>
+                  </div>
+                </div>
+                <a href="https://youtube.com/watch?v=kJQP7kiw5Fk" class="yt-btn" target="_blank">
+                  <i class="fab fa-youtube"></i> Nghe trên YouTube </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Notification Elements -->
+    <div class="notification follow-notification" id="followNotification">
+      <div class="notification-icon">
+        <i class="fab fa-facebook"></i>
+      </div>
+      <div class="notification-content">
+        <h3>Chuyển đến Facebook</h3>
+        <p>Bạn sắp được chuyển đến trang Facebook. Bạn có chắc muốn tiếp tục?</p>
+        <div class="notification-buttons">
+          <button class="notification-btn cancel-btn" id="followCancel">Hủy bỏ</button>
+          <button class="notification-btn confirm-btn" id="followConfirm">Đồng ý</button>
+        </div>
+      </div>
+    </div>
+    <div class="notification message-notification" id="messageNotification">
+      <div class="notification-icon">
+        <i class="fab fa-facebook-messenger"></i>
+      </div>
+      <div class="notification-content">
+        <h3>Mở Messenger</h3>
+        <p>Bạn sắp được chuyển đến ứng dụng nhắn tin. Bạn có chắc muốn tiếp tục?</p>
+        <div class="notification-buttons">
+          <button class="notification-btn cancel-btn" id="messageCancel">Hủy bỏ</button>
+          <button class="notification-btn confirm-btn" id="messageConfirm">Đồng ý</button>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Welcome overlay
+        const welcomeOverlay = document.getElementById('welcome-overlay');
+        const okButton = document.getElementById('overlay-ok-btn');
+        // Hiển thị overlay khi mới mở web
+        welcomeOverlay.style.display = 'flex';
+        okButton.addEventListener('click', function() {
+          // Ẩn overlay với hiệu ứng fade out
+          welcomeOverlay.classList.add('hidden');
+          // Phát nhạc thiết lập sẵn (bài đầu tiên) với âm lượng 70%
+          setTimeout(() => {
+            const firstMusicCard = document.querySelector('.music-card[data-id="1"]');
+            const id = firstMusicCard.dataset.id;
+            playMusic(firstMusicCard, id);
+          }, 500);
+        });
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const icon = themeToggle.querySelector('i');
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+          document.body.classList.add('light-theme');
+          icon.classList.remove('fa-moon');
+          icon.classList.add('fa-sun');
+        }
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (!savedTheme && systemPrefersDark) {
+          document.body.classList.add('light-theme');
+          icon.classList.remove('fa-moon');
+          icon.classList.add('fa-sun');
+        }
+        themeToggle.addEventListener('click', function() {
+          document.body.classList.toggle('light-theme');
+          if (document.body.classList.contains('light-theme')) {
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            localStorage.setItem('theme', 'light');
+          } else {
+            icon.classList.remove('fa-sun');
+            icon.classList.add('fa-moon');
+            localStorage.setItem('theme', 'dark');
+          }
+        });
+        // Music player
+        const musicCards = document.querySelectorAll('.music-card');
+        let currentAudio = null;
+        let currentCard = null;
+        let progressInterval = null;
+        let progressBars = {};
+        let timeElements = {};
+        let savedTimes = {};
+        musicCards.forEach(card => {
+          const id = card.dataset.id;
+          progressBars[id] = card.querySelector('.progress');
+          timeElements[id] = card.querySelectorAll('.time');
+          savedTimes[id] = 0;
+        });
+        musicCards.forEach(card => {
+          const playBtn = card.querySelector('.play-btn');
+          const id = card.dataset.id;
+          playBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            if (currentCard === card && currentAudio && !currentAudio.paused) {
+              pauseMusic();
+              return;
+            }
+            if (currentCard && currentCard !== card) {
+              pauseMusic();
+            }
+            playMusic(card, id);
+          });
+          const progressBar = card.querySelector('.progress-bar');
+          progressBar.addEventListener('click', function(e) {
+            if (!currentAudio || currentCard !== card) return;
+            const rect = progressBar.getBoundingClientRect();
+            const offsetX = e.clientX - rect.left;
+            const percentage = offsetX / rect.width;
+            const newTime = percentage * currentAudio.duration;
+            currentAudio.currentTime = newTime;
+            updateProgress(id, newTime);
+          });
+        });
+
+        function playMusic(card, id) {
+          if (!currentAudio || currentCard !== card) {
+            if (currentAudio) {
+              currentAudio.pause();
+              currentAudio = null;
+            }
+            currentAudio = new Audio();
+            currentAudio.src = getAudioSource(id);
+            currentAudio.volume = 0.7; // Âm lượng 70%
+            if (savedTimes[id]) {
+              currentAudio.currentTime = savedTimes[id];
+            }
+            currentCard = card;
+          }
+          currentAudio.play().catch(e => console.error("Lỗi phát nhạc:", e));
+          card.classList.add('active');
+          const playIcon = card.querySelector('.play-btn i');
+          playIcon.classList.remove('fa-play');
+          playIcon.classList.add('fa-pause');
+          if (progressInterval) clearInterval(progressInterval);
+          progressInterval = setInterval(() => {
+            if (currentAudio && !currentAudio.paused) {
+              updateProgress(id, currentAudio.currentTime);
+            }
+          }, 100);
+          currentAudio.onended = function() {
+            pauseMusic();
+            savedTimes[id] = 0;
+            updateProgress(id, 0);
+            timeElements[id][0].textContent = formatTime(0);
+          };
+        }
+
+        function pauseMusic() {
+          if (!currentAudio) return;
+          currentAudio.pause();
+          const id = currentCard.dataset.id;
+          savedTimes[id] = currentAudio.currentTime;
+          currentCard.classList.remove('active');
+          const playIcon = currentCard.querySelector('.play-btn i');
+          playIcon.classList.remove('fa-pause');
+          playIcon.classList.add('fa-play');
+          clearInterval(progressInterval);
+        }
+
+        function formatTime(seconds) {
+          const min = Math.floor(seconds / 60);
+          const sec = Math.floor(seconds % 60);
+          return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        function updateProgress(id, currentTime) {
+          const duration = currentAudio ? (isNaN(currentAudio.duration) ? 200 : currentAudio.duration) : 200;
+          const percentage = (currentTime / duration) * 100;
+          if (progressBars[id]) {
+            progressBars[id].style.width = `${percentage}%`;
+          }
+          if (timeElements[id] && timeElements[id][0]) {
+            timeElements[id][0].textContent = formatTime(currentTime);
+            if (timeElements[id][1]) {
+              timeElements[id][1].textContent = formatTime(duration);
+            }
+          }
+        }
+
+        function getAudioSource(id) {
+          const sources = {
+            '1': 'nhac1.mp3',
+            '2': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3',
+            '3': 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'
+          };
+          return sources[id];
+        }
+        // Notification System
+        const followBtn = document.getElementById('followBtn');
+        const messageBtn = document.getElementById('messageBtn');
+        const followNotification = document.getElementById('followNotification');
+        const messageNotification = document.getElementById('messageNotification');
+        const followCancel = document.getElementById('followCancel');
+        const followConfirm = document.getElementById('followConfirm');
+        const messageCancel = document.getElementById('messageCancel');
+        const messageConfirm = document.getElementById('messageConfirm');
+        // Xử lý nút Theo dõi
+        followBtn.addEventListener('click', () => {
+          followNotification.classList.add('active');
+        });
+        // Xử lý nút Nhắn tin
+        messageBtn.addEventListener('click', () => {
+          messageNotification.classList.add('active');
+        });
+        // Xử lý nút hủy và xác nhận cho Theo dõi
+        followCancel.addEventListener('click', () => {
+          followNotification.classList.remove('active');
+        });
+        followConfirm.addEventListener('click', () => {
+          followNotification.classList.remove('active');
+          setTimeout(() => {
+            Swal.fire({
+              title: 'Đang chuyển đến Facebook',
+              text: 'Bạn sẽ được chuyển đến trang Facebook trong tab mới',
+              icon: 'info',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            window.open('https://www.facebook.com/share/1FAED51eTU/', '_blank');
+          }, 300);
+        });
+        // Xử lý nút hủy và xác nhận cho Nhắn tin
+        messageCancel.addEventListener('click', () => {
+          messageNotification.classList.remove('active');
+        });
+        messageConfirm.addEventListener('click', () => {
+          messageNotification.classList.remove('active');
+          setTimeout(() => {
+            Swal.fire({
+              title: 'Đang mở Messenger',
+              text: 'Bạn sẽ được chuyển đến ứng dụng nhắn tin trong tab mới',
+              icon: 'info',
+              timer: 2000,
+              showConfirmButton: false
+            });
+            window.open('https://m.me/DuongApi', '_blank');
+          }, 300);
+        });
+        // Đóng thông báo khi click ra ngoài
+        document.addEventListener('click', (e) => {
+          if (!followNotification.contains(e.target) && !followBtn.contains(e.target)) {
+            followNotification.classList.remove('active');
+          }
+          if (!messageNotification.contains(e.target) && !messageBtn.contains(e.target)) {
+            messageNotification.classList.remove('active');
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
